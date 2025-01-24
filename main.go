@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
-	"io/ioutil"
+	"io"
 	"os"
-	"bytes"
+	"strings"
 )
 
 func Getauth() map[string]interface{} {
