@@ -15,10 +15,15 @@ func Getauth() map[string]interface{} {
         clientID := os.Getenv("CLIENTID")
         clientSECRET := os.Getenv("CLIENTSECRET")
 
+	if clientID == "" || clientSECRET == "" {
+    		fmt.Println("Variáveis de ambiente CLIENTID ou CLIENTSECRET não estão definidas")
+    		return nil
+	}
+
         data := url.Values{}
         data.Set("grant_type","client_credentials")
 
-        req, err := http.NewRequest("POST", tokenURL, bytes.NewBufferString(data.Encode()))
+        req, err := http.NewRequest("POST", tokenURL, strings.NewReader(data.Encode()))
         if err != nil {
                 fmt.Println("Erro ao criar a requisição:",err)
                 return nil
@@ -36,7 +41,7 @@ func Getauth() map[string]interface{} {
 
 		defer resp.Body.Close()
 		
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Println("Erro ao ler a resposta:",err)
 		}
